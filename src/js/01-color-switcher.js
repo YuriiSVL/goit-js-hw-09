@@ -1,12 +1,17 @@
 class colorSwitcher {
-  constructor(start, stop, interval) {
-    this.startBtn = start;
-    this.stopBtn = stop;
-    this.intervalId = interval;
+  constructor(startBtn, stopBtn, elToSwitch, intervalId) {
+    this.startBtn = startBtn;
+    this.stopBtn = stopBtn;
+    this.intervalId = intervalId;
+    this.elToSwitch = elToSwitch;
+
+    this.startBtn.addEventListener('click', this.onStartBtnClick.bind(this));
+    this.stopBtn.addEventListener('click', this.onStopBtnClick.bind(this));
   }
+
   onStartBtnClick() {
     intervalId = setInterval(() => {
-      bodyRef.style.backgroundColor = `${this.getRandomHexColor()}`;
+      this.elToSwitch.style.backgroundColor = `${this.getRandomHexColor()}`;
     }, 1000);
     this.startBtn.disabled = true;
   }
@@ -25,13 +30,9 @@ const startBtn = document.querySelector('[data-start]');
 const stopBtn = document.querySelector('[data-stop]');
 let intervalId = null;
 
-const myColorSwitcher = new colorSwitcher(startBtn, stopBtn, intervalId);
-
-startBtn.addEventListener(
-  'click',
-  myColorSwitcher.onStartBtnClick.bind(myColorSwitcher)
-);
-stopBtn.addEventListener(
-  'click',
-  myColorSwitcher.onStopBtnClick.bind(myColorSwitcher)
+const myColorSwitcher = new colorSwitcher(
+  startBtn,
+  stopBtn,
+  bodyRef,
+  intervalId
 );
