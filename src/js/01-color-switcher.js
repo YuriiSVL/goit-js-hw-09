@@ -14,11 +14,13 @@ class colorSwitcher {
       this.elToSwitch.style.backgroundColor = `${this.getRandomHexColor()}`;
     }, 1000);
     this.startBtn.disabled = true;
+    this.stopBtn.disabled = false;
   }
 
   onStopBtnClick() {
     clearInterval(intervalId);
     this.startBtn.disabled = false;
+    this.stopBtn.disabled = true;
   }
   getRandomHexColor() {
     return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
@@ -26,13 +28,13 @@ class colorSwitcher {
 }
 
 const bodyRef = document.querySelector('body');
-const startBtn = document.querySelector('[data-start]');
-const stopBtn = document.querySelector('[data-stop]');
+const startBtnRef = document.querySelector('[data-start]');
+const stopBtnRef = document.querySelector('[data-stop]');
 let intervalId = null;
 
 const myColorSwitcher = new colorSwitcher(
-  startBtn,
-  stopBtn,
+  startBtnRef,
+  stopBtnRef,
   bodyRef,
   intervalId
 );
