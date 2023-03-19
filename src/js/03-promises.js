@@ -1,17 +1,19 @@
 import Notiflix from 'notiflix';
 
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
+class PromiseCreator {
+  createPromise(position, delay) {
+    const shouldResolve = Math.random() > 0.3;
 
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldResolve) {
-        resolve({ position, delay });
-      } else {
-        reject({ position, delay });
-      }
-    }, delay);
-  });
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (shouldResolve) {
+          resolve({ position, delay });
+        } else {
+          reject({ position, delay });
+        }
+      }, delay);
+    });
+  }
 }
 
 const refs = {
@@ -20,12 +22,12 @@ const refs = {
   fieldStep: document.querySelector('[name="step"]'),
   fieldAmount: document.querySelector('[name="amount"]'),
 };
-
 const { form, fieldDelay, fieldStep, fieldAmount } = refs;
+const promiseCreator = new PromiseCreator();
 
-form.addEventListener('submit', onFormSubmit);
+form.addEventListener('submit', onSubmit);
 
-function onFormSubmit(e) {
+function onSubmit(e) {
   e.preventDefault();
 
   let delay = Number(fieldDelay.value);
@@ -33,7 +35,8 @@ function onFormSubmit(e) {
   const amount = Number(fieldAmount.value);
 
   for (let i = 1; i <= amount; i += 1) {
-    createPromise(i, delay)
+    promiseCreator
+      .createPromise(i, delay)
       .then(({ position, delay }) => {
         Notiflix.Notify.success(
           `✅ Fulfilled promise ${position} in ${delay}ms`
